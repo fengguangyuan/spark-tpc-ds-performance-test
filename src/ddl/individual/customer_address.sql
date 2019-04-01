@@ -15,8 +15,10 @@ create table customer_address_text
     ca_gmt_offset             double,
     ca_location_type          string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/customer_address")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/customer_address' INTO TABLE customer_address_text
 ;
 drop table if exists customer_address;
 create table customer_address

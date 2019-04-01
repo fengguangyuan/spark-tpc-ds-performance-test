@@ -24,8 +24,10 @@ create table item_text
     i_manager_id              int,
     i_product_name            string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/item")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/item' INTO TABLE item_text
 ;
 drop table if exists item;
 create table item

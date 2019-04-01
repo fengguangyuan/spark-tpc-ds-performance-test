@@ -16,8 +16,10 @@ create table warehouse_text
     w_country                 string,
     w_gmt_offset              double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/warehouse")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/warehouse' INTO TABLE warehouse_text
 ;
 drop table if exists warehouse;
 create table warehouse

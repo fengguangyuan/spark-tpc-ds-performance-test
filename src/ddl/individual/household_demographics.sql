@@ -7,8 +7,10 @@ create table household_demographics_text
     hd_dep_count              int,
     hd_vehicle_count          int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/household_demographics")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/household_demographics' INTO TABLE household_demographics_text
 ;
 drop table if exists household_demographics;
 create table household_demographics

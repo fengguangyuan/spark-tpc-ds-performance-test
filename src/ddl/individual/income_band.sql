@@ -5,8 +5,10 @@ create table income_band_text
     ib_lower_bound            int,
     ib_upper_bound            int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/income_band")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/income_band' INTO TABLE income_band_text
 ;
 drop table if exists income_band;
 create table income_band 

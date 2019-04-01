@@ -30,8 +30,10 @@ create table date_dim_text
     d_current_quarter         string,
     d_current_year            string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/date_dim")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/date_dim' INTO TABLE date_dim_text
 ;
 drop table if exists date_dim;
 create table date_dim

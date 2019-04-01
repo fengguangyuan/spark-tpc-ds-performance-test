@@ -20,8 +20,10 @@ create table customer_text
     c_email_address           string,
     c_last_review_date        string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/customer")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/customer' INTO TABLE customer_text
 ;
 drop table if exists customer;
 create table customer

@@ -36,8 +36,10 @@ create table web_sales_text
     ws_net_paid_inc_ship_tax  double,
     ws_net_profit             double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_sales")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_sales' INTO TABLE web_sales_text
 ;
 drop table if exists web_sales;
 create table web_sales

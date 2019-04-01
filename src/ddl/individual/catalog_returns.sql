@@ -29,8 +29,10 @@ create table catalog_returns_text
     cr_store_credit           double,
     cr_net_loss               double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/catalog_returns")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/catalog_returns' INTO TABLE catalog_returns_text
 ;
 drop table if exists catalog_returns;
 create table catalog_returns

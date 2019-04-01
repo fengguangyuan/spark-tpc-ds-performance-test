@@ -6,8 +6,10 @@ create table inventory_text
     inv_warehouse_sk          int,
     inv_quantity_on_hand      bigint
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/inventory")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/inventory' INTO TABLE inventory_text
 ;
 drop table if exists inventory;
 create table inventory 

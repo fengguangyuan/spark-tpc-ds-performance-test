@@ -16,7 +16,15 @@ printf "%$width.${width}s\n" "$divider" >> ${OUTPUT_DIR}/run_summary.txt
 for i in `cat ${OUTPUT_DIR}/runlist.txt`;
 do
   num=`printf "%02d\n" $i`
-  bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS}  -database TPCDS -f ${OUTPUT_DIR}/query${num}.sql > ${OUTPUT_DIR}/query${num}.res 2>&1 
+  case $TPCDS_SPARK_CLUSTER in
+      standalone)
+          bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS}  -database TPCDS -f ${OUTPUT_DIR}/query${num}.sql > ${OUTPUT_DIR}/query${num}.res 2>&1
+          ;;
+      k8s)
+          bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.mlp.group=${SPARK_GROUP_NAME} --conf spark.sql.catalogImplementation=hive -database TPCDS -f ${OUTPUT_DIR}/query${num}.sql > ${OUTPUT_DIR}/query${num}.res 2>&1 
+          ;;
+      *)  echo "Invalid TPCDS_SPARK_CLUSTER value!!!";;
+  esac
   lines=`cat ${OUTPUT_DIR}/query${num}.res | grep "Time taken:"`
   echo "$lines" | while read -r line; 
   do

@@ -20,8 +20,10 @@ create table promotion_text
     p_purpose                 string,
     p_discount_active         string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/promotion")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/promotion' INTO TABLE promotion_text
 ;
 drop table if exists promotion;
 create table promotion

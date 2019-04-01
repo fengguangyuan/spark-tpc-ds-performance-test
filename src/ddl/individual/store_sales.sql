@@ -25,8 +25,10 @@ create table store_sales_text
     ss_net_paid_inc_tax       double,
     ss_net_profit             double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/store_sales")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/store_sales' INTO TABLE store_sales_text
 ;
 drop table if exists store_sales;
 create table store_sales

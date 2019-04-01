@@ -11,8 +11,10 @@ create table customer_demographics_text
     cd_dep_employed_count     int,
     cd_dep_college_count      int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/customer_demographics")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/customer_demographics' INTO TABLE customer_demographics_text
 ;
 drop table if exists customer_demographics;
 create table customer_demographics

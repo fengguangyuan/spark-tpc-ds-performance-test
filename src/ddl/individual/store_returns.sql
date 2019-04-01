@@ -22,8 +22,10 @@ create table store_returns_text
     sr_store_credit           double,
     sr_net_loss               double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/store_returns")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/store_returns' INTO TABLE store_returns_text
 ;
 drop table if exists store_returns;
 create table store_returns 

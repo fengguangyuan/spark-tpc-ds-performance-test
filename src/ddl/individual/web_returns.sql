@@ -26,8 +26,10 @@ create table web_returns_text
     wr_account_credit         double,
     wr_net_loss               double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_returns")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_returns' INTO TABLE web_returns_text
 ;
 drop table if exists web_returns;
 create table web_returns

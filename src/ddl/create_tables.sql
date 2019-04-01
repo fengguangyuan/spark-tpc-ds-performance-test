@@ -45,8 +45,10 @@ create table call_center_text
     cc_gmt_offset             double,
     cc_tax_percentage         double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/call_center.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/call_center/call_center.dat' INTO TABLE call_center_text
 ;
 drop table if exists call_center;
 create table call_center 
@@ -68,8 +70,10 @@ create table catalog_page_text
     cp_description            string,
     cp_type                   string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/catalog_page.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/catalog_page/catalog_page.dat' INTO TABLE catalog_page_text
 ;
 drop table if exists catalog_page;
 create table catalog_page
@@ -109,8 +113,10 @@ create table catalog_returns_text
     cr_store_credit           double,
     cr_net_loss               double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/catalog_returns.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/catalog_returns/*.dat' INTO TABLE catalog_returns_text
 ;
 drop table if exists catalog_returns;
 create table catalog_returns
@@ -158,8 +164,10 @@ create table catalog_sales_text
     cs_net_paid_inc_ship_tax  double,
     cs_net_profit             double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/catalog_sales.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/catalog_sales/*.dat' INTO TABLE catalog_sales_text
 ;
 drop table if exists catalog_sales;
 create table catalog_sales
@@ -190,8 +198,10 @@ create table customer_text
     c_email_address           string,
     c_last_review_date        string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/customer.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/customer/*.dat' INTO TABLE customer_text
 ;
 drop table if exists customer;
 create table customer
@@ -218,8 +228,10 @@ create table customer_address_text
     ca_gmt_offset             double,
     ca_location_type          string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/customer_address.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/customer_address/*.dat' INTO TABLE customer_address_text
 ;
 drop table if exists customer_address;
 create table customer_address
@@ -241,8 +253,10 @@ create table customer_demographics_text
     cd_dep_employed_count     int,
     cd_dep_college_count      int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/customer_demographics.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/customer_demographics/*.dat' INTO TABLE customer_demographics_text
 ;
 drop table if exists customer_demographics;
 create table customer_demographics
@@ -283,8 +297,10 @@ create table date_dim_text
     d_current_quarter         string,
     d_current_year            string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/date_dim.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/date_dim/*.dat' INTO TABLE date_dim_text
 ;
 drop table if exists date_dim;
 create table date_dim
@@ -302,8 +318,10 @@ create table household_demographics_text
     hd_dep_count              int,
     hd_vehicle_count          int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/household_demographics.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/household_demographics/*.dat' INTO TABLE household_demographics_text
 ;
 drop table if exists household_demographics;
 create table household_demographics
@@ -319,8 +337,10 @@ create table income_band_text
     ib_lower_bound            int,
     ib_upper_bound            int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/income_band.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/income_band/*.dat' INTO TABLE income_band_text
 ;
 drop table if exists income_band;
 create table income_band 
@@ -337,8 +357,10 @@ create table inventory_text
     inv_warehouse_sk          int,
     inv_quantity_on_hand      bigint
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/inventory.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/inventory/*.dat' INTO TABLE inventory_text
 ;
 drop table if exists inventory;
 create table inventory 
@@ -373,8 +395,10 @@ create table item_text
     i_manager_id              int,
     i_product_name            string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/item.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/item/*.dat' INTO TABLE item_text
 ;
 drop table if exists item;
 create table item
@@ -406,8 +430,10 @@ create table promotion_text
     p_purpose                 string,
     p_discount_active         string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/promotion.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/promotion/*.dat' INTO TABLE promotion_text
 ;
 drop table if exists promotion;
 create table promotion
@@ -423,8 +449,10 @@ create table reason_text
     r_reason_id               string,
     r_reason_desc             string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/reason.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/reason/*.dat' INTO TABLE reason_text
 ;
 drop table if exists reason;
 create table reason 
@@ -443,8 +471,10 @@ create table ship_mode_text
     sm_carrier                string,
     sm_contract               string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/ship_mode.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/ship_mode/*.dat' INTO TABLE ship_mode_text
 ;
 drop table if exists ship_mode;
 create table ship_mode
@@ -486,8 +516,10 @@ create table store_text
     s_gmt_offset              double,
     s_tax_precentage          double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/store.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/store/*.dat' INTO TABLE store_text
 ;
 drop table if exists store;
 create table store 
@@ -520,8 +552,10 @@ create table store_returns_text
     sr_store_credit           double,
     sr_net_loss               double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/store_returns.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/store_returns/*.dat' INTO TABLE store_returns_text
 ;
 drop table if exists store_returns;
 create table store_returns 
@@ -557,8 +591,10 @@ create table store_sales_text
     ss_net_paid_inc_tax       double,
     ss_net_profit             double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/store_sales.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/store_sales/*.dat' INTO TABLE store_sales_text
 ;
 drop table if exists store_sales;
 create table store_sales
@@ -581,8 +617,10 @@ create table time_dim_text
     t_sub_shift               string,
     t_meal_time               string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/time_dim.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/time_dim/*.dat' INTO TABLE time_dim_text
 ;
 drop table if exists time_dim;
 create table time_dim
@@ -609,8 +647,10 @@ create table warehouse_text
     w_country                 string,
     w_gmt_offset              double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/warehouse.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/warehouse/*.dat' INTO TABLE warehouse_text
 ;
 drop table if exists warehouse;
 create table warehouse
@@ -637,8 +677,10 @@ create table web_page_text
     wp_image_count            int,
     wp_max_ad_count           int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_page.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_page/*.dat' INTO TABLE web_page_text
 ;
 drop table if exists web_page;
 create table web_page 
@@ -675,8 +717,10 @@ create table web_returns_text
     wr_account_credit         double,
     wr_net_loss               double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_returns.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_returns/*.dat' INTO TABLE web_returns_text
 ;
 drop table if exists web_returns;
 create table web_returns
@@ -723,8 +767,10 @@ create table web_sales_text
     ws_net_paid_inc_ship_tax  double,
     ws_net_profit             double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_sales.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_sales/*.dat' INTO TABLE web_sales_text
 ;
 drop table if exists web_sales;
 create table web_sales
@@ -763,8 +809,10 @@ create table web_site_text
     web_gmt_offset            double,
     web_tax_percentage        double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_site.dat")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_site/*.dat' INTO TABLE web_site_text
 ;
 drop table if exists web_site;
 create table web_site

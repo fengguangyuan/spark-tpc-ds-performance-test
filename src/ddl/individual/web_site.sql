@@ -28,8 +28,10 @@ create table web_site_text
     web_gmt_offset            double,
     web_tax_percentage        double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_site")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_site' INTO TABLE web_site_text
 ;
 drop table if exists web_site;
 create table web_site

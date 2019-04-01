@@ -31,8 +31,10 @@ create table store_text
     s_gmt_offset              double,
     s_tax_precentage          double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/store")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/store' INTO TABLE store_text
 ;
 drop table if exists store;
 create table store 

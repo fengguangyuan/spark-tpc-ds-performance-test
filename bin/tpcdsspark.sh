@@ -95,8 +95,20 @@ check_createtables() {
   DRIVER_OPTIONS="--driver-memory 4g --driver-java-options -Dlog4j.configuration=file:///${output_dir}/log4j.properties"
   EXECUTOR_OPTIONS="--executor-memory 2g --conf spark.executor.extraJavaOptions=-Dlog4j.configuration=file:///${output_dir}/log4j.properties"
   logInfo "Checking pre-reqs for running TPC-DS queries. May take a few seconds.."
-  bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/row_counts.sql > ${TPCDS_WORK_DIR}/rowcounts.out 2>&1
-  cat ${TPCDS_WORK_DIR}/rowcounts.out | grep -v "Time" | grep -v "SLF4J" >> ${TPCDS_WORK_DIR}/rowcounts.rrn
+
+  case $TPCDS_SPARK_CLUSTER in
+      standalone)
+          bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/row_counts.sql > ${TPCDS_WORK_DIR}/rowcounts.out 2>&1
+          bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/row_counts.sql > ${TPCDS_WORK_DIR}/rowcounts.out 2>&1
+          ;;
+      k8s)
+          bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.mlp.group=${SPARK_GROUP_NAME} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/row_counts.sql > ${TPCDS_WORK_DIR}/rowcounts.out 2>&1
+          bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.mlp.group=${SPARK_GROUP_NAME} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/row_counts.sql > ${TPCDS_WORK_DIR}/rowcounts.out 2>&1
+          ;;
+      *)  echo "Invalid TPCDS_SPARK_CLUSTER value!!!";;
+  esac
+
+  cat ${TPCDS_WORK_DIR}/rowcounts.out | grep -v "Time" | grep -v "SLF4J" | grep -v "Hive" >> ${TPCDS_WORK_DIR}/rowcounts.rrn
   file1=${TPCDS_WORK_DIR}/rowcounts.rrn
   file2=${TPCDS_ROOT_DIR}/src/ddl/rowcounts.expected
   if cmp -s "$file1" "$file2"
@@ -337,10 +349,25 @@ function create_spark_tables {
     DRIVER_OPTIONS="--driver-java-options -Dlog4j.configuration=file:///${output_dir}/log4j.properties"
     EXECUTOR_OPTIONS="--conf spark.executor.extraJavaOptions=-Dlog4j.configuration=file:///${output_dir}/log4j.properties"
     logInfo "Creating tables. Will take a few minutes ..."
+    if [ -z "${TPCDS_SPARK_CLUSTER}" ]; then
+        export TPCDS_SPARK_CLUSTER=standalone
+    fi
     ProgressBar 2 122
-    bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/create_database.sql > ${TPCDS_WORK_DIR}/create_database.out 2>&1
-    script_pid=$!
-    bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/create_tables_work.sql > ${TPCDS_WORK_DIR}/create_tables.out 2>&1 &
+
+    case $TPCDS_SPARK_CLUSTER in
+        k8s)
+            bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.mlp.group=${SPARK_GROUP_NAME} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/create_database.sql > ${TPCDS_WORK_DIR}/create_database.out 2>&1
+            script_pid=$!
+            bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.mlp.group=${SPARK_GROUP_NAME} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/create_tables_work.sql > ${TPCDS_WORK_DIR}/create_tables.out 2>&1 &
+            ;;
+        standalone)
+            bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/create_database.sql > ${TPCDS_WORK_DIR}/create_database.out 2>&1
+            script_pid=$!
+            bin/spark-sql ${DRIVER_OPTIONS} ${EXECUTOR_OPTIONS} --conf spark.sql.catalogImplementation=hive -f ${TPCDS_WORK_DIR}/create_tables_work.sql > ${TPCDS_WORK_DIR}/create_tables.out 2>&1 &
+            ;;
+        *)  echo "Invalid TPCDS_SPARK_CLUSTER value!!!!";;
+    esac
+
     script_pid=$!
     cont=1
     error_code=0

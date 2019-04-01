@@ -16,8 +16,10 @@ create table web_page_text
     wp_image_count            int,
     wp_max_ad_count           int
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/web_page")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/web_page' INTO TABLE web_page_text
 ;
 drop table if exists web_page;
 create table web_page 

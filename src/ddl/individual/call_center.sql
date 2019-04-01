@@ -33,8 +33,10 @@ create table call_center_text
     cc_gmt_offset             double,
     cc_tax_percentage         double
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/call_center")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/call_center' INTO TABLE call_center_text
 ;
 drop table if exists call_center;
 create table call_center 

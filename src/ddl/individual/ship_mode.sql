@@ -8,8 +8,10 @@ create table ship_mode_text
     sm_carrier                string,
     sm_contract               string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/ship_mode")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/ship_mode' INTO TABLE ship_mode_text
 ;
 drop table if exists ship_mode;
 create table ship_mode

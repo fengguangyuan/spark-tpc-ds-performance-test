@@ -11,8 +11,10 @@ create table catalog_page_text
     cp_description            string,
     cp_type                   string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/catalog_page")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/catalog_page' INTO TABLE catalog_page_text
 ;
 drop table if exists catalog_page;
 create table catalog_page

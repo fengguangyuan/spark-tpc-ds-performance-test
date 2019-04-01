@@ -5,8 +5,10 @@ create table reason_text
     r_reason_id               string,
     r_reason_desc             string
 )
-USING csv
-OPTIONS(header "false", delimiter "|", path "${TPCDS_GENDATA_DIR}/reason")
+USING hive
+OPTIONS(header "false", fileFormat "textfile", fieldDelim "|")
+;
+LOAD DATA LOCAL INPATH '${TPCDS_GENDATA_DIR}/reason' INTO TABLE reason_text
 ;
 drop table if exists reason;
 create table reason 
